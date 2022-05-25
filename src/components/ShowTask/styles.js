@@ -3,6 +3,9 @@ import styled from "styled-components";
 export const TaskContainer = styled.div`
   max-width: 500px;
   margin: 40px auto;
+  & h1 {
+    text-align: center;
+  }
 `;
 
 export const TaskDiv = styled.div`

@@ -1,54 +1,80 @@
+// Import packages
 import React, { useEffect, useState } from "react";
 import ShowTask from "../ShowTask/ShowTask";
-import { Button, Container, Form, Heading, InputContainer } from "./styles";
+import { Container, Heading } from "./styles";
+import { v4 as uuid4 } from "uuid";
+import Form from "../Form/Form";
 
 const Main = () => {
+  // Main states
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+  const [editTask, setEditTask] = useState(null);
+  // Main app function
   const onSubmit = (e) => {
     e.preventDefault();
-    const taskData = { title: title, description: description, date: date };
-    setTasks([...tasks, taskData]);
-    setTitle("");
-    setDescription("");
-    setDate("");
+    // Show alert
+    if (title === "" || description === "" || date === "") {
+      window.alert("Please fill up the form.");
+    } else {
+      // condtion for update
+      if (editTask) {
+        const editedTask = tasks.find((element) => element.id === editTask.id);
+        editedTask.title = title;
+        editedTask.description = description;
+        editedTask.date = date;
+        // const getTasks = JSON.parse(localStorage.getItem('tasks'))
+        // const updatedData = getTasks.map(element => {
+        //   if(element.id === editTask.id) {
+        //     element.title = title;
+        //     element.description = description;
+        //   }
+        // })
+        setTitle("");
+        setDescription("");
+        setDate("");
+        setEditTask(null);
+      } else {
+        const taskData = {
+          id: uuid4(),
+          title: title,
+          description: description,
+          date: date,
+        };
+        localStorage.setItem("tasks", JSON.stringify([...tasks, taskData]));
+        setTasks([...tasks, taskData]);
+        setTitle("");
+        setDescription("");
+        setDate("");
+      }
+    }
   };
+
+  // Load the selected data
   useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
+    if (editTask) {
+      setTitle(editTask.title);
+      setDescription(editTask.description);
+      setDate(editTask.date);
+    }
+  }, [editTask]);
+
   return (
     <Container>
       <Heading>Task Manager</Heading>
-      <Form onSubmit={onSubmit}>
-        <InputContainer>
-          <input
-            type="text"
-            placeholder="Enter Task Title..."
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <textarea
-            placeholder="Enter Task Description..."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </InputContainer>
-        <InputContainer>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-        </InputContainer>
-        <InputContainer>
-          <Button type="submit">Add</Button>
-        </InputContainer>
-      </Form>
-      <ShowTask tasks={tasks} />
+      <Form
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+        date={date}
+        setDate={setDate}
+        onSubmit={onSubmit}
+        editTask={editTask}
+      />
+      <ShowTask tasks={tasks} setTasks={setTasks} setEditTask={setEditTask} />
     </Container>
   );
 };
