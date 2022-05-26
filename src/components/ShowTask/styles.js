@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { MdOutlineDelete } from "react-icons/md";
+import { AiFillEdit } from "react-icons/ai";
 
 export const TaskContainer = styled.div`
   max-width: 500px;
@@ -27,7 +29,7 @@ export const TaskFooter = styled.div`
 `;
 
 export const ButtonContainer = styled.div`
-  min-width: 160px;
+  min-width: 120px;
   display: flex;
   justify-content: space-between;
   & button {
@@ -42,4 +44,14 @@ export const ButtonContainer = styled.div`
     font-size: 12px;
     cursor: pointer;
   }
+`;
+
+export const DeleteButton = styled(MdOutlineDelete)`
+  color: #ffffff;
+  font-size: 20px;
+`;
+
+export const EditButton = styled(AiFillEdit)`
+  color: #fff;
+  font-size: 20px;
 `;

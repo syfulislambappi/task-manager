@@ -25,13 +25,16 @@ const Main = () => {
         editedTask.title = title;
         editedTask.description = description;
         editedTask.date = date;
-        // const getTasks = JSON.parse(localStorage.getItem('tasks'))
-        // const updatedData = getTasks.map(element => {
-        //   if(element.id === editTask.id) {
-        //     element.title = title;
-        //     element.description = description;
-        //   }
-        // })
+        const getTasks = JSON.parse(localStorage.getItem("tasks"));
+        const updatedData = getTasks.map((element) => {
+          if (element.id === editTask.id) {
+            element.title = title;
+            element.description = description;
+            element.date = date;
+          }
+          return element;
+        });
+        localStorage.setItem("tasks", JSON.stringify(updatedData));
         setTitle("");
         setDescription("");
         setDate("");
